@@ -1,9 +1,3 @@
-﻿@model IEnumerable<TestingTemplates.Models.Robot>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,13 +33,15 @@
 
 <body>
     <div class="container-fluid position-relative bg-white d-flex p-0">
-      @*   <!-- Spinner Start -->
+        <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <!-- Spinner End --> *@
+        <!-- Spinner End -->
+
+
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
@@ -74,14 +70,14 @@
                     </div>
                     <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
                     <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
-                    <a href="table.html" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Tables</a>
+                    <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
+                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="signin.html" class="dropdown-item">Sign In</a>
                             <a href="signup.html" class="dropdown-item">Sign Up</a>
-                            <a href="404.html" class="dropdown-item">404 Error</a>
+                            <a href="404.html" class="dropdown-item active">404 Error</a>
                             <a href="blank.html" class="dropdown-item">Blank Page</a>
                         </div>
                     </div>
@@ -89,6 +85,8 @@
             </nav>
         </div>
         <!-- Sidebar End -->
+
+
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
@@ -99,20 +97,9 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-              @*   <form class="d-none d-md-flex ms-4">
+                <form class="d-none d-md-flex ms-4">
                     <input class="form-control border-0" type="search" placeholder="Search">
-                </form> *@
-
-                <!----------------------------MY SEARCH---------------------------------->
-
-                <form asp-controller="Robots" asp-action="Index" method="get" class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0"
-                           type="search"
-                           name="searchString"
-                           placeholder="Search robots..."
-                           value="@Context.Request.Query["searchString"]">
                 </form>
-
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -191,111 +178,22 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-            <!-- Table Start -->
-            <p>
-                <a asp-action="Create">Create New</a>
-            </p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RobDescription)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RobType)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RobColor)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RobStatus)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RobDescription)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RobType)
-                            </td>
-                            <td style="background-color: @item.RobColor">
-                                @Html.DisplayFor(modelItem => item.RobColor)
-                            </td>
 
-                            <td>
-                                @{
-                                    string statusText = item.RobStatus switch
-                                    {
-                                        0 => "Online",
-                                        1 => "Standby",
-                                        2 => "Offline",
-                                        3 => "In Reparatur",
-                                        4 => "Außer Betrieb",
-                                    };
-                                }
 
-                                @statusText
-                            </td>
-
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.RobidPk">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.RobidPk">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.RobidPk">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <!-- Table End -->
-
-            <!----------------------PAGINATION-------------------------->
-
-            <nav>
-                <ul class="pagination justify-content-center">
-
-                    @if (ViewBag.CurrentPage > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link"
-                                   asp-action="Index"
-                                   asp-route-page="@(ViewBag.CurrentPage - 1)"
-                                   asp-route-searchString="@ViewBag.SearchString">
-                                Previous
-                            </a>
-                        </li>
-                    }
-
-                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                    {
-                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                            <a class="page-link"
-                                   asp-action="Index"
-                                   asp-route-page="@i"
-                                   asp-route-searchString="@ViewBag.SearchString">
-                                @i
-                            </a>
-                        </li>
-                    }
-
-                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-                    {
-                        <li class="page-item">
-                            <a class="page-link"
-                                   asp-action="Index"
-                                   asp-route-page="@(ViewBag.CurrentPage + 1)"
-                                   asp-route-searchString="@ViewBag.SearchString">
-                                Next
-                            </a>
-                        </li>
-                    }
-
-                </ul>
-            </nav>
+            <!-- 404 Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row vh-100 bg-light rounded align-items-center justify-content-center mx-0">
+                    <div class="col-md-6 text-center p-4">
+                        <i class="bi bi-exclamation-triangle display-1 text-primary"></i>
+                        <h1 class="display-1 fw-bold">404</h1>
+                        <h1 class="mb-4">Page Not Found</h1>
+                        <p class="mb-4">We’re sorry, the page you have looked for does not exist in our website!
+                            Maybe go to our home page or try to use a search?</p>
+                        <a class="btn btn-primary rounded-pill py-3 px-5" href="">Go Back To Home</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 404 End -->
 
 
             <!-- Footer Start -->
@@ -303,7 +201,7 @@
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -315,11 +213,13 @@
             <!-- Footer End -->
         </div>
         <!-- Content End -->
+
+
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
-@*     <!-- JavaScript Libraries -->
+    <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/chart/chart.min.js"></script>
@@ -328,81 +228,10 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script> *@
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
 
 </html>
-
-
-
-@* 
-@model IEnumerable<TestingTemplates.Models.Robot>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">   
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RobDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RobType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RobColor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RobStatus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RobDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RobType)
-            </td>
-                <td style="background-color: @item.RobColor">
-                    @Html.DisplayFor(modelItem => item.RobColor)
-                </td>
-
-                <td>
-                    @{
-                        string statusText = item.RobStatus switch
-                        {
-                            0 => "Online",
-                            1 => "Standby",
-                            2 => "Offline",
-                            3 => "In Reparatur",
-                            4 => "Außer Betrieb",
-                        };
-                    }
-
-                    @statusText
-                </td>
-
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RobidPk">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RobidPk">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RobidPk">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
- *@

@@ -19,9 +19,59 @@ namespace TestingTemplates.Controllers
         }
 
         // GET: Robots
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Robots.ToListAsync());
+        //}
+
+        //public async Task<IActionResult> Index(string searchString)
+        //{
+        //    var robots = from r in _context.Robots
+        //                 select r;
+
+        //    if (!String.IsNullOrEmpty(searchString))
+        //    {
+        //        robots = robots.Where(r =>
+        //            r.RobDescription.Contains(searchString) ||
+        //            r.RobType.Contains(searchString) ||
+        //            r.RobStatus.ToString().Contains(searchString)
+        //        );
+        //    }
+
+        //    return View(await robots.ToListAsync());
+        //}
+
+        public async Task<IActionResult> Index(string searchString, int page = 1)
         {
-            return View(await _context.Robots.ToListAsync());
+            int pageSize = 5; 
+
+            var robots = _context.Robots.AsQueryable();
+
+            
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                robots = robots.Where(r =>
+                    r.RobDescription.Contains(searchString) ||
+                    r.RobType.Contains(searchString) ||
+                    r.RobStatus.ToString().Contains(searchString)
+                );
+            }
+
+           
+            int totalItems = await robots.CountAsync();
+
+            
+            var items = await robots
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            ViewBag.SearchString = searchString;
+
+            return View(items);
         }
 
         // GET: Robots/Details/5

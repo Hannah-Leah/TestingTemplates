@@ -1,9 +1,3 @@
-﻿@model IEnumerable<TestingTemplates.Models.Robot>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,13 +33,15 @@
 
 <body>
     <div class="container-fluid position-relative bg-white d-flex p-0">
-      @*   <!-- Spinner Start -->
+        <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <!-- Spinner End --> *@
+        <!-- Spinner End -->
+
+
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
@@ -72,9 +68,9 @@
                             <a href="element.html" class="dropdown-item">Other Elements</a>
                         </div>
                     </div>
-                    <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
+                    <a href="widget.html" class="nav-item nav-link active"><i class="fa fa-th me-2"></i>Widgets</a>
                     <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
-                    <a href="table.html" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Tables</a>
+                    <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
                     <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -89,6 +85,8 @@
             </nav>
         </div>
         <!-- Sidebar End -->
+
+
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
@@ -99,20 +97,9 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-              @*   <form class="d-none d-md-flex ms-4">
+                <form class="d-none d-md-flex ms-4">
                     <input class="form-control border-0" type="search" placeholder="Search">
-                </form> *@
-
-                <!----------------------------MY SEARCH---------------------------------->
-
-                <form asp-controller="Robots" asp-action="Index" method="get" class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0"
-                           type="search"
-                           name="searchString"
-                           placeholder="Search robots..."
-                           value="@Context.Request.Query["searchString"]">
                 </form>
-
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -191,111 +178,155 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-            <!-- Table Start -->
-            <p>
-                <a asp-action="Create">Create New</a>
-            </p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RobDescription)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RobType)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RobColor)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RobStatus)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RobDescription)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RobType)
-                            </td>
-                            <td style="background-color: @item.RobColor">
-                                @Html.DisplayFor(modelItem => item.RobColor)
-                            </td>
 
-                            <td>
-                                @{
-                                    string statusText = item.RobStatus switch
-                                    {
-                                        0 => "Online",
-                                        1 => "Standby",
-                                        2 => "Offline",
-                                        3 => "In Reparatur",
-                                        4 => "Außer Betrieb",
-                                    };
-                                }
 
-                                @statusText
-                            </td>
-
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.RobidPk">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.RobidPk">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.RobidPk">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <!-- Table End -->
-
-            <!----------------------PAGINATION-------------------------->
-
-            <nav>
-                <ul class="pagination justify-content-center">
-
-                    @if (ViewBag.CurrentPage > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link"
-                                   asp-action="Index"
-                                   asp-route-page="@(ViewBag.CurrentPage - 1)"
-                                   asp-route-searchString="@ViewBag.SearchString">
-                                Previous
-                            </a>
-                        </li>
-                    }
-
-                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                    {
-                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                            <a class="page-link"
-                                   asp-action="Index"
-                                   asp-route-page="@i"
-                                   asp-route-searchString="@ViewBag.SearchString">
-                                @i
-                            </a>
-                        </li>
-                    }
-
-                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-                    {
-                        <li class="page-item">
-                            <a class="page-link"
-                                   asp-action="Index"
-                                   asp-route-page="@(ViewBag.CurrentPage + 1)"
-                                   asp-route-searchString="@ViewBag.SearchString">
-                                Next
-                            </a>
-                        </li>
-                    }
-
-                </ul>
-            </nav>
+            <!-- Chart Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 bg-light rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Messages</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-3">
+                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-0">Jhon Doe</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                    <span>Short message goes here...</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-3">
+                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-0">Jhon Doe</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                    <span>Short message goes here...</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-3">
+                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-0">Jhon Doe</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                    <span>Short message goes here...</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center pt-3">
+                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-0">Jhon Doe</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                    <span>Short message goes here...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 bg-light rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Calender</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <div id="calender"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 bg-light rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">To Do List</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <input class="form-control bg-transparent" type="text" placeholder="Enter task">
+                                <button type="button" class="btn btn-primary ms-2">Add</button>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <input class="form-check-input m-0" type="checkbox">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span>Short task goes here...</span>
+                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <input class="form-check-input m-0" type="checkbox">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span>Short task goes here...</span>
+                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <input class="form-check-input m-0" type="checkbox" checked>
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span><del>Short task goes here...</del></span>
+                                        <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <input class="form-check-input m-0" type="checkbox">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span>Short task goes here...</span>
+                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center pt-2">
+                                <input class="form-check-input m-0" type="checkbox">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span>Short task goes here...</span>
+                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">Testimonial</h6>
+                            <div class="owl-carousel testimonial-carousel">
+                                <div class="testimonial-item text-center">
+                                    <img class="img-fluid rounded-circle mx-auto mb-4" src="img/testimonial-1.jpg" style="width: 100px; height: 100px;">
+                                    <h5 class="mb-1">Client Name</h5>
+                                    <p>Profession</p>
+                                    <p class="mb-0">Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
+                                </div>
+                                <div class="testimonial-item text-center">
+                                    <img class="img-fluid rounded-circle mx-auto mb-4" src="img/testimonial-2.jpg" style="width: 100px; height: 100px;">
+                                    <h5 class="mb-1">Client Name</h5>
+                                    <p>Profession</p>
+                                    <p class="mb-0">Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-light rounded h-100 p-4">
+                            <iframe class="position-relative rounded w-100 h-100"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
+                            frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
+                            tabindex="0"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Chart End -->
 
 
             <!-- Footer Start -->
@@ -303,7 +334,7 @@
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -315,11 +346,13 @@
             <!-- Footer End -->
         </div>
         <!-- Content End -->
+
+
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
-@*     <!-- JavaScript Libraries -->
+    <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/chart/chart.min.js"></script>
@@ -328,81 +361,10 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script> *@
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
 
 </html>
-
-
-
-@* 
-@model IEnumerable<TestingTemplates.Models.Robot>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">   
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RobDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RobType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RobColor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RobStatus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RobDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RobType)
-            </td>
-                <td style="background-color: @item.RobColor">
-                    @Html.DisplayFor(modelItem => item.RobColor)
-                </td>
-
-                <td>
-                    @{
-                        string statusText = item.RobStatus switch
-                        {
-                            0 => "Online",
-                            1 => "Standby",
-                            2 => "Offline",
-                            3 => "In Reparatur",
-                            4 => "Außer Betrieb",
-                        };
-                    }
-
-                    @statusText
-                </td>
-
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RobidPk">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RobidPk">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RobidPk">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
- *@
