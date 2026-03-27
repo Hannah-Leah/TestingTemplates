@@ -33,7 +33,7 @@ namespace TestingTemplates
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Robots}/{action=Index}/{id?}");
 
             app.Run();
         }
