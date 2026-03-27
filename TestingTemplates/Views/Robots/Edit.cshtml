@@ -1,0 +1,49 @@
+﻿@model TestingTemplates.Models.Robot
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Robot</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RobidPk" />
+            <div class="form-group">
+                <label asp-for="RobDescription" class="control-label"></label>
+                <input asp-for="RobDescription" class="form-control" />
+                <span asp-validation-for="RobDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RobType" class="control-label"></label>
+                <input asp-for="RobType" class="form-control" />
+                <span asp-validation-for="RobType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RobColor" class="control-label"></label>
+                <input asp-for="RobColor" class="form-control" />
+                <span asp-validation-for="RobColor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RobStatus" class="control-label"></label>
+                <input asp-for="RobStatus" class="form-control" />
+                <span asp-validation-for="RobStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

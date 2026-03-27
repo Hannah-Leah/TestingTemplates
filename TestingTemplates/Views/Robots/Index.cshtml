@@ -1,0 +1,66 @@
+﻿@model IEnumerable<TestingTemplates.Models.Robot>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">   
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RobDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RobType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RobColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RobStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RobDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RobType)
+            </td>
+                <td style="background-color: @item.RobColor">
+                    @Html.DisplayFor(modelItem => item.RobColor)
+                </td>
+
+                <td>
+                    @{
+                        string statusText = item.RobStatus switch
+                        {
+                            0 => "Online",
+                            1 => "Standby",
+                            2 => "Offline",
+                            3 => "In Reparatur",
+                            4 => "Außer Betrieb",
+                        };
+                    }
+
+                    @statusText
+                </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RobidPk">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RobidPk">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RobidPk">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
